@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  build-test-and-lint:
+    docker:
+      - image: "circleci/python:3.10.0"
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - "venv"
+      - run:
+          name: Run tests
+          command: |
+            pytest
+      - run:
+          name: Lint
+          command: |
+            flake8
+
+workflows:
+  build-test-and-lint:
+    jobs:
+      - build-test-and-lint
