@@ -20,10 +20,12 @@ jobs:
       - run:
           name: Run tests
           command: |
+            . venv/bin/activate
             pytest
       - run:
           name: Lint
           command: |
+            . venv/bin/activate
             flake8
 
 workflows:
