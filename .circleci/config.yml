@@ -29,7 +29,7 @@ jobs:
             flake8
   dockerize:
     docker:
-      - image: docker:20.10.12-git
+      - image: docker:latest
     environment:
       DOCKER_DRIVER: overlay2
     steps:
