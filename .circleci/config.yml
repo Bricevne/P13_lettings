@@ -27,8 +27,37 @@ jobs:
           command: |
             . venv/bin/activate
             flake8
+  dockerize:
+    docker:
+      - image: docker:20.10.12-git
+    environment:
+      DOCKER_DRIVER: overlay2
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and tag Docker image
+          command: |
+            docker-compose build
+            docker login -u bricevne -p $DOCKERHUB_PASSWORD
+            docker tag oc-lettings-site:latest bricevne/oc-lettings-site:latest
+            docker push bricevne/oc-lettings-site:latest
+
 
 workflows:
-  build-test-and-lint:
+  build-test-and-deploy:
     jobs:
       - build-test-and-lint
+#      - dockerize:
+#          requires:
+#            build-test-and-lint
+#          filters:
+#            branches:
+#              only: master
+#      - deploy:
+#          requires:
+#            dockerize
+#          filters:
+#            branches:
+#              only: master
