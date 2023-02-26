@@ -4,6 +4,7 @@ services:
   web:
     build: .
     image: oc-lettings-site
+    env_file: .env
     volumes:
       - .:/app
     ports:
