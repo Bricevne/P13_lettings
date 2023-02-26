@@ -51,7 +51,7 @@ workflows:
       - build-test-and-lint
       - dockerize:
           requires:
-            build-test-and-lint
+            - build-test-and-lint
           filters:
             branches:
               only: master
