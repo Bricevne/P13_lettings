@@ -13,12 +13,6 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-      - run:
-          name: Install Git
-          command: |
-            . venv/bin/activate
-            sudo apt-get update
-            sudo apt-get install -y git
       - save_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
@@ -38,6 +32,7 @@ jobs:
       - image: docker:latest
     environment:
       DOCKER_DRIVER: overlay2
+      IMAGE_TAG: ${CIRCLE_SHA1}
     steps:
       - checkout
       - setup_remote_docker:
@@ -46,7 +41,6 @@ jobs:
           name: Build and tag Docker image
           command: |
             IMAGE_NAME=bricevne/oc-lettings-site
-            IMAGE_TAG=$(env PATH=$PATH:/usr/bin/git git rev-parse --short HEAD)
             docker build -t $IMAGE_NAME:$IMAGE_TAG .
             docker login -u bricevne -p $DOCKERHUB_PASSWORD
             docker push $IMAGE_NAME:$IMAGE_TAG
