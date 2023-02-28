@@ -46,7 +46,7 @@ jobs:
           name: Build and tag Docker image
           command: |
             IMAGE_NAME=bricevne/oc-lettings-site
-            IMAGE_TAG=$(PATH=$PATH:/usr/bin/git git rev-parse --short HEAD)
+            IMAGE_TAG=$(env PATH=$PATH:/usr/bin/git git rev-parse --short HEAD)
             docker build -t $IMAGE_NAME:$IMAGE_TAG .
             docker login -u bricevne -p $DOCKERHUB_PASSWORD
             docker push $IMAGE_NAME:$IMAGE_TAG
