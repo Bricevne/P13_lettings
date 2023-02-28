@@ -32,7 +32,6 @@ jobs:
       - image: docker:latest
     environment:
       DOCKER_DRIVER: overlay2
-      IMAGE_TAG: ${CIRCLE_SHA1}
     steps:
       - checkout
       - setup_remote_docker:
@@ -40,11 +39,11 @@ jobs:
       - run:
           name: Build and tag Docker image
           command: |
-            docker build -t bricevne/oc-lettings-site:$IMAGE_TAG .
+            docker build -t bricevne/oc-lettings-site:$CIRCLE_SHA1 .
             docker login -u bricevne -p $DOCKERHUB_PASSWORD
-            docker push $IMAGE_NAME:$IMAGE_TAG
-            docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:latest
+            docker push bricevne/oc-lettings-site:$CIRCLE_SHA1
+            docker tag bricevne/oc-lettings-site:$CIRCLE_SHA1 bricevne/oc-lettings-site:latest
+            docker push bricevne/oc-lettings-site:latest
 
 workflows:
   build-test-and-deploy:
