@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Build and tag Docker image
           command: |
-            docker build --platform linux/amd64 -t bricevne/oc-lettings-site:$CIRCLE_SHA1 .
+            docker build --platform linux/arm64/v8 -t bricevne/oc-lettings-site:$CIRCLE_SHA1 .
             docker login -u bricevne -p $DOCKERHUB_PASSWORD
             docker push bricevne/oc-lettings-site:$CIRCLE_SHA1
             docker tag bricevne/oc-lettings-site:$CIRCLE_SHA1 bricevne/oc-lettings-site:latest
