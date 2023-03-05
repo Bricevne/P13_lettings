@@ -84,7 +84,7 @@ workflows:
               only: master
       - deploy:
           requires:
-            dockerize
+            - dockerize
           filters:
             branches:
               only: master
