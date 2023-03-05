@@ -46,12 +46,9 @@ jobs:
             docker tag $DOCKERHUB_USERNAME/oc-lettings-site:$CIRCLE_SHA1 $DOCKERHUB_USERNAME/oc-lettings-site:latest
             docker push $DOCKERHUB_USERNAME/oc-lettings-site:latest
   deploy:
-    docker:
-      - image: cimg/python:3.10.0
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: Pulling container from Dockerhub
           command: |
@@ -61,7 +58,7 @@ jobs:
       - run:
           name: Pushing container to Heroku
           command: |
-            
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
             HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:login
             HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku create $HEROKU_APP_NAME --region eu
             HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $HEROKU_APP_NAME
