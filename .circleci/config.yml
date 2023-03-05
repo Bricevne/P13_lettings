@@ -44,6 +44,33 @@ jobs:
             docker push $DOCKERHUB_USERNAME/oc-lettings-site:$CIRCLE_SHA1
             docker tag $DOCKERHUB_USERNAME/oc-lettings-site:$CIRCLE_SHA1 $DOCKERHUB_USERNAME/oc-lettings-site:latest
             docker push $DOCKERHUB_USERNAME/oc-lettings-site:latest
+  deploy:
+    docker:
+      - image: heroku/python:3.10
+    steps:
+      - checkout
+      - run:
+          name: Pulling container from Dockerhub
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker pull $DOCKERHUB_USERNAME/oc-lettings-site:$CIRCLE_SHA1
+
+      - run:
+          name: Pushing container to Heroku
+          command: |
+            
+            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:login
+            heroku create $HEROKU_APP_NAME --region eu
+            heroku config:set $DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $HEROKU_APP_NAME
+            heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
+            
+            docker tag $DOCKERHUB_USERNAME/oc-lettings:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+      - run:
+          name: Releasing container
+          command: |          
+            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:release web -a $HEROKU_APP_NAME
 
 workflows:
   build-test-and-deploy:
@@ -55,9 +82,9 @@ workflows:
           filters:
             branches:
               only: master
-#      - deploy:
-#          requires:
-#            dockerize
-#          filters:
-#            branches:
-#              only: master
+      - deploy:
+          requires:
+            dockerize
+          filters:
+            branches:
+              only: master
