@@ -68,7 +68,7 @@ jobs:
       - run:
           name: Releasing container
           command: |          
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:release web -a $HEROKU_APP_NAME
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release web -a $HEROKU_APP_NAME
 
 workflows:
   build-test-and-deploy:
