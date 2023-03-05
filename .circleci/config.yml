@@ -46,7 +46,7 @@ jobs:
             docker push $DOCKERHUB_USERNAME/oc-lettings-site:latest
   deploy:
     docker:
-      - image: heroku/python:3.10
+      - image: heroku/python:3.10.0
     steps:
       - checkout
       - run:
