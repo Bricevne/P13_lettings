@@ -63,7 +63,8 @@ jobs:
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku create $HEROKU_APP_NAME --region eu || true
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $HEROKU_APP_NAME
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
-            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web -a $HEROKU_APP_NAME
+            docker tag $DOCKERHUB_USERNAME/oc-lettings-site:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME/web
 
       - run:
           name: Releasing container
