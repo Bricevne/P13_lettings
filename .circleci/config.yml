@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-test-and-lint:
     docker:
-      - image: "circleci/python:3.10.0"
+      - image: cimg/python:3.10.0
     steps:
       - checkout
       - restore_cache:
@@ -46,7 +46,7 @@ jobs:
             docker push $DOCKERHUB_USERNAME/oc-lettings-site:latest
   deploy:
     docker:
-      - image: heroku/python:3.10.0
+      - image: heroku/heroku:22
     steps:
       - checkout
       - run:
