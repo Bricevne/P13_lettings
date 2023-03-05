@@ -59,11 +59,11 @@ jobs:
           name: Pushing container to Heroku
           command: |
             sudo curl https://cli-assets.heroku.com/install.sh | sh
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:login
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku create $HEROKU_APP_NAME --region eu
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $HEROKU_APP_NAME
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
-            HEROKU_API_KEY=${HEROKU_SECRET_KEY} heroku container:push web -a $HEROKU_APP_NAME
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku create $HEROKU_APP_NAME --region eu || true
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY -a $HEROKU_APP_NAME
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku config:set DEBUG=$DEBUG -a $HEROKU_APP_NAME
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push web -a $HEROKU_APP_NAME
 
       - run:
           name: Releasing container
