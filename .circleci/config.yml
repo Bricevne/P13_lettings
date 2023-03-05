@@ -5,12 +5,12 @@ jobs:
     docker:
       - image: cimg/python:3.10.0
     steps:
-      - run: python --version
       - checkout
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
           command: |
+            pip install virtualenv
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
