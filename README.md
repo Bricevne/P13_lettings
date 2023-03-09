@@ -208,22 +208,28 @@ You can execute the corresponding docker directly on your computer
 
 - [DockerHub account](https://hub.docker.com/)
 - Docker (Docker engine for Linux/Ubuntu, Doker Desktop for Windows/Mac)
+- Create an .env file with the following variables:
 
-Avoir exécuté le Pipeline précédent (sur CircleCi).
-Renseigner les variables d'environnement dans le fichier ".env" (voir le tableau plus bas pour les variables)
+```bash
+DJANGO_SECRET_KEY="YOUR_DJANGO_SECRET_KEY"
+SENTRY_DSN="SENTRY_DSN"
+```
 
 ### Use
 
-.env = chemin d'accès du fichier ".env".
 
-On a terminal with root privileges:
+On a terminal:
 
 ```bash
 docker pull bricevne/oc-lettings-site:tag # Pull the image
-docker run -d -p 8000:8000 --env-file .env bricevne/oc-lettings-site # Run the docker container
+docker run -d -p 8000:8000 --env-file .env bricevne/oc-lettings-site:tag # Run the docker container
 ```
 
-You can access the website with: localhost:8000
+The tag can be the following:
+- latest to get the last version of the image
+- SHA1: the unique ID of the last commit pushed to GitHub (last tag version: 456d85f97dc26d6f6ec44668dc14b1d3a2396f25) Example : `docker run -d -p 8000:8000 --env-file .env bricevne/oc-lettings-site:456d85f97dc26d6f6ec44668dc14b1d3a2396f25`
+
+You can access the website with: localhost:8000 or O.0.0.0:8000
 
 ## License
 
