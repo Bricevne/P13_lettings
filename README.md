@@ -229,7 +229,7 @@ The tag can be the following:
 - latest to get the last version of the image
 - SHA1: the unique ID of the last commit pushed to GitHub (last tag version: 456d85f97dc26d6f6ec44668dc14b1d3a2396f25) Example : `docker run -d -p 8000:8000 --env-file .env bricevne/oc-lettings-site:456d85f97dc26d6f6ec44668dc14b1d3a2396f25`
 
-You can access the website with: localhost:8000 or O.0.0.0:8000
+You can access the website with: localhost:8000 or 0.0.0.0:8000
 
 ## License
 
