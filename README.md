@@ -218,7 +218,7 @@ SENTRY_DSN="SENTRY_DSN"
 ### Use
 
 
-On a terminal:
+On a terminal :
 
 ```bash
 docker pull bricevne/oc-lettings-site:tag # Pull the image
